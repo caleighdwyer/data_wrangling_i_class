@@ -134,7 +134,7 @@ mlb_df =
 
 ```
 
-Import a SAS file.
+Import a SAS file:
 
 ```{r}
 pulse_df = 
@@ -142,4 +142,24 @@ pulse_df =
 view(pulse_df)
 ```
 
+##BaseR ....
+
+don't use this! use read_csv instead. This shows way too much data (because it default "prints"). don't use "$" commands
+```{r}
+litters_df =
+  read.csv("data/FAS_litters.csv")
+
+```
+
+##Export data
+
+```{r}
+litters_df_cleaned =
+  read_csv("data/FAS_litters.csv")
+
+litters_df_cleaned =
+  janitor::clean_names(litters_df_cleaned)
+
+write_csv(litters_df_cleaned, "data/litters_cleaned.csv")
+```
 
