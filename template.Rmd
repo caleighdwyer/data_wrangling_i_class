@@ -1,19 +1,29 @@
 ---
-title: "Simple document"
-output: html_document
+title: "Session 5"
+output: github_document
 ---
 
-I'm an R Markdown document! 
 
-# Section 1
+```{r setup}
+library(tidyverse)
+```
 
-Here's a **code chunk** that samples from 
-a _normal distribution_:
+Tidyverse is a set of eight different packages, loads them all quickly which is more efficient.
+let's import the `FAS_litters.csv` csv
+
 
 ```{r}
-samp = rnorm(100)
-length(samp)
+litters_df =
+  read_csv("data/FAS_litters.csv")
+
+litters_df =
+  janitor::clean_names(litters_df)
+
+
 ```
+
+
+Janitor command with "clean_names" above cleans up the column names automatically (adds an underscore in place of spaces). Syntax basically says "load this one cammand (clean names) from within janitor package"
 
 # Section 2
 
