@@ -12,6 +12,7 @@ Tidyverse is a set of eight different packages, loads them all quickly which is 
 let's import the `FAS_litters.csv` csv
 
 
+Import dataset using relative path:
 ```{r}
 litters_df =
   read_csv("data/FAS_litters.csv")
@@ -24,6 +25,17 @@ litters_df =
 
 
 Janitor command with "clean_names" above cleans up the column names automatically (adds an underscore in place of spaces). Syntax basically says "load this one cammand (clean names) from within janitor package"
+
+import same dataset using absolute path
+
+```{r}
+litters_df_ab
+read_csv()
+```
+
+In the above you would write the entire file path, starting with "documents". but we want to avoid this, because it creates confusion when someone tries to run the same code on their comptuer if they dont have the exact same path. So we use relative paths instead.
+
+
 
 # Section 2
 
