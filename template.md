@@ -18,6 +18,11 @@ library(tidyverse)
     ## ✖ dplyr::lag()    masks stats::lag()
     ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 
+``` r
+library(readxl)
+library(haven)
+```
+
 Tidyverse is a set of eight different packages, loads them all quickly
 which is more efficient. let’s import the `FAS_litters.csv` csv
 
@@ -336,3 +341,56 @@ litters_df
 R reads the first 1000 rows to guess what type of variable it is. For
 instance, if first 1000 rows are characters but 1001 row is numeric, you
 must have R read more rows.
+
+csv stands for comma separated values – very simple storage of data
+
+\##Other file types
+
+import a xlsx file first (works pretty similar to read_csv), it is not
+part of tidyverse package so must load it separately.
+
+``` r
+mlb_df =
+  read_excel("data/mlb11.xlsx")
+```
+
+Import a SAS file:
+
+``` r
+pulse_df = 
+  read_sas("data/public_pulse_data.sas7bdat")
+view(pulse_df)
+```
+
+\##BaseR ….
+
+don’t use this! use read_csv instead. This shows way too much data
+(because it default “prints”). don’t use “\$” commands
+
+``` r
+litters_df =
+  read.csv("data/FAS_litters.csv")
+```
+
+\##Export data
+
+``` r
+litters_df_cleaned =
+  read_csv("data/FAS_litters.csv")
+```
+
+    ## Rows: 49 Columns: 8
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (2): Group, Litter Number
+    ## dbl (6): GD0 weight, GD18 weight, GD of Birth, Pups born alive, Pups dead @ ...
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+litters_df_cleaned =
+  janitor::clean_names(litters_df_cleaned)
+
+write_csv(litters_df_cleaned, "data/litters_cleaned.csv")
+```
