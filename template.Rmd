@@ -3,9 +3,12 @@ title: "Session 5"
 output: github_document
 ---
 
+##import data
 
 ```{r setup}
 library(tidyverse)
+library(readxl)
+library(haven)
 ```
 
 Tidyverse is a set of eight different packages, loads them all quickly which is more efficient.
@@ -28,16 +31,115 @@ Janitor command with "clean_names" above cleans up the column names automaticall
 
 import same dataset using absolute path
 
-```{r}
+```{r, eval=FALSE, echo=FALSE}
 litters_df_ab
 read_csv()
 ```
 
 In the above you would write the entire file path, starting with "documents". but we want to avoid this, because it creates confusion when someone tries to run the same code on their comptuer if they dont have the exact same path. So we use relative paths instead.
 
+learning assessment:
+
+```{r}
+pup_df=
+  read_csv("data/fas_pups.csv")
+
+pup_df
+
+pup_df = 
+  janitor::clean_names(pup_df)
+
+```
+
+##look at data
+
+```{r}
+litters_df
+
+head(litters_df)
+
+tail(litters_df)
+```
 
 
-# Section 2
+You can use view to look at entire dataset:
 
-I can take the mean of the sample, too!
-The mean is `r mean(samp)`.
+```{r, eval=FALSE}
+view(litters_df)
+
+```
+
+This creates a spreadsheet view in a separate tab so you can see all the observations. You probably wanna do this in the command line so you don't mess up the markdown file.
+
+This shows you the types of variables:
+
+```{r}
+str(litters_df)
+```
+
+
+This gives you a summary of the dataset, including min max:
+
+```{r}
+skimr::skim(litters_df)
+```
+
+
+##Options in `read_*`
+
+Skip can be used to skip rows when importing (might be useful if there are junky rows that are given to you. but you must include "false" caveat for column names otherwise it will delete you variable names and assume first line of data = the variable names) 
+
+```{r}
+litters_df=
+  read_csv(
+    "data/FAS_litters.csv",
+    skip = 10, col_names = FALSE)
+litters_df
+```
+
+look at NA values:
+
+```{r}
+litters_df=
+  read_csv(
+    "data/FAS_litters.csv",
+    na = c("NA", 19))
+litters_df
+```
+
+Use the above to relabel missing values (for instance, when datacleaning, if 999 represents missing data)
+
+```{r}
+litters_df = 
+  read_csv(
+    "data/FAS_litters.csv",
+    col_types =
+      cols(
+        Group = col_factor()
+      ))
+litters_df
+```
+
+R reads the first 1000 rows to guess what type of variable it is. For instance, if first 1000 rows are characters but 1001 row is numeric, you must have R read more rows.
+
+csv stands for comma separated values -- very simple storage of data
+
+##Other file types
+
+import a xlsx file first (works pretty similar to read_csv), it is not part of tidyverse package so must load it separately.
+
+```{r}
+mlb_df =
+  read_excel("data/mlb11.xlsx")
+
+```
+
+Import a SAS file.
+
+```{r}
+pulse_df = 
+  read_sas("data/public_pulse_data.sas7bdat")
+view(pulse_df)
+```
+
+
