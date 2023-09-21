@@ -5,3 +5,51 @@ date: "2023-09-21"
 ---
 
 
+```{r}
+library(tidyverse)
+litters_df=
+  read_csv("data/fas_litters.csv")
+litters_df = janitor::clean_names(litters_df)
+
+pups_df =
+  read_csv("data/fas_pups.csv")
+pups_df = janitor::clean_names(pups_df)
+
+
+```
+
+
+##select function
+
+"select" is used to select columns (variable)
+(will put them in the order you right them)
+":" is used to say "everything between this variable and that variable"
+starts_with can be used to select columns that start with a certain term
+Use - to take out a specific variable
+"everything" says I want to keep all the variables, but lets you reorder your columns.
+
+```{r}
+select(litters_df, group, litter_number, gd0_weight)
+
+select(litters_df, group, gd0_weight:gd_of_birth)
+
+select(litters_df, group, starts_with("pups"))
+
+select(litters_df, -litter_number)
+
+select(litters_df, -starts_with("gd"))
+
+select(litters_df, group, litter_id = litter_number)
+
+select(litters_df, group, litter_id = litter_number, everything())
+
+select(litters_df, gd0_weight, everything())
+
+```
+
+select vs. pull
+```{r}
+select(litters_df, group)
+pull(litters_df, group)
+```
+
