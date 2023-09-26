@@ -100,5 +100,34 @@ lotr_df =
 lotr_df
 ```
 
+computers create ghost versions of an excel file that you manipulate that look like ~$dataset, don't commit those because they disappear!
+
+you don't want to store nominal data (sex) as dummy variables (1, 2), because it creates issues later when you don't understand what is what. Sounds like you can calculate as a dummy variable later using factor vector?
+
+```{r}
+litters_df =
+  read_csv("data/FAS_litters.csv") |> 
+  janitor::clean_names() |> 
+  mutate(wt_gain = gd0_weight - gd0_weight) |> 
+  select(litter_number, group, wt_gain) |> 
+  separate(group, into = c("dose","day_of_tx"), 3)
+  
+pups_df =
+  read_csv("data/FAS_pups.csv") |> 
+  janitor::clean_names() |> 
+  mutate(
+    sex = case_match(
+      sex,
+      1~"male",
+      2~"female"
+    )
+  )
+  
+fas_df =
+  left_join(pups_df, litters_df, by = "litter_number")
+
+fas_df
+
+```
 
 
