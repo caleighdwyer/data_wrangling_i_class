@@ -8,22 +8,34 @@ date: "2023-09-26"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+library(tidyverse)
 ```
 
-## Including Plots
+##pulse dataset
 
-You can also embed plots, for example:
+haven helps us read data, specifically read_sas helps with sas files
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+in the original dataset, the bdi score and each visit was spread across several variables. below changes from y format to long format, so that all those variables are values of one combined variable (visit) and then bdi_score
+
+will do extra tidying to make sure naming convention is consistent across bdi_scores
+
+in a mutate statement, replace is used to change values in one variable to another value
+```{r}
+pulse_df =
+  haven::read_sas("data/public_pulse_data.sas7bdat") |> 
+  janitor::clean_names() |> 
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit",
+    values_to = "bdi_score",
+    names_prefix = "bdi_score_"
+  ) |> 
+  mutate(
+    visit = replace(visit, visit == "bl", "00m")
+  )
+
+
+pulse_df
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
